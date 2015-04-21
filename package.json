@@ -29,15 +29,29 @@
     "ember-cli-qunit": "0.3.10",
     "ember-cli-uglify": "1.0.1",
     "ember-data": "1.0.0-beta.16.1",
-    "ember-export-application-global": "^1.0.2",
     "ember-disable-prototype-extensions": "^1.0.0",
+    "ember-export-application-global": "^1.0.2",
     "ember-try": "0.0.4"
   },
   "keywords": [
-    "ember-addon"
+    "ember-addon",
+    "emberella",
+    "ella",
+    "mixins",
+    "helpers",
+    "remote query bindings",
+    "resize handler",
+    "scroll handler",
+    "style bindings",
+    "debounce",
+    "throttle",
+    "async iterator"
   ],
   "dependencies": {
-    "ember-cli-babel": "^5.0.0"
+    "ember-cli-babel": "^5.0.0",
+    "ember-cli-coffeescript": "^0.10.0",
+    "ember-cli-version-checker": "^1.0.2",
+    "lodash": "^3.7.0"
   },
   "ember-addon": {
     "configPath": "tests/dummy/config"
