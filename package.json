@@ -1,6 +1,6 @@
 {
   "name": "ella-burn-ins",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Helpers and mixins used by other Emberella addons.",
   "directories": {
     "doc": "doc",
