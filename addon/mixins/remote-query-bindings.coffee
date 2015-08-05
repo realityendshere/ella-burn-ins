@@ -7,7 +7,7 @@
 ###
 
 get = Ember.get
-keys = Ember.keys
+keys = Object.keys
 defineProperty = Ember.defineProperty
 
 ###
