@@ -10,7 +10,7 @@ debounce = Ember.run.debounce
 # The resize handler will fire onWindowResize when the window resize ends
 ResizeHandlerMixin = Ember.Mixin.create
   ###
-    Current state
+    Current state: being resized or not being resized
 
     @property resizing
     @type Boolean
@@ -18,30 +18,74 @@ ResizeHandlerMixin = Ember.Mixin.create
   ###
   resizing: no
 
-  # Time in ms to debounce before triggering resizeEnd
+  ###
+    The number of milliseconds to wait after the most recent resize event to
+    consider the resizing action complete and call the onResizeEnd handler.
+
+    @property resizeEndDelay
+    @type Integer
+    @default 100
+  ###
   resizeEndDelay: 100
 
-  # This hook allows you to do any preparation to the view prior to any DOM
-  # resize
-  onResizeStart:  -> @
+  ###
+    A resize handler that binds _handleWindowResize to this component.
 
-  # This hook allows you to clean up any sizing preparation
-  onResizeEnd:    -> @
-
-  # This hook allows you to listen to the window resizing
-  onResize:       -> @
-
-  # A resize handler that binds handleWindowResize to this view
+    @property resizeHandler
+    @type Function
+    @final
+  ###
   resizeHandler: computed({
     get: ->
-      jQuery.proxy(@handleWindowResize, @)
+      jQuery.proxy(@_handleWindowResize, @)
   })
 
-  # Browser only allows us to listen to windows resize. This function let us
-  # resizeStart and resizeEnd event
-  handleWindowResize: (evt) ->
+  ###
+    Hook for responding to the beginning of a window resize action.
+
+    Override with your own method if desired.
+
+    @method onResizeStart
+  ###
+  onResizeStart:  (evt) -> @
+
+  ###
+    Hook for responding to the end of a window resize action.
+
+    Override with your own method if desired.
+
+    @method onResizeEnd
+  ###
+  onResizeEnd:    (evt) -> @
+
+  ###
+    Hook for responding to individual window resize events. These can fire
+    very rapidly. Don't do anything too complex here.
+
+    Override with your own method if desired.
+
+    @method onResize
+  ###
+  onResize:       (evt) -> @
+
+  ###
+    @private
+
+    Respond to window resize. Call onResizeStart, onResize, and onResizeEnd
+    hooks as needed and if defined.
+
+    @method _handleWindowResize
+  ###
+  _handleWindowResize: (evt) ->
     @_onResizeStart(evt)._onResize(evt)._onResizeEnd(evt)
 
+  ###
+    @private
+
+    Wrapper for custom onResizeStart.
+
+    @method _onResizeStart
+  ###
   _onResizeStart: (evt) ->
     return @ if get(@, 'resizing')
     set(@, 'resizing', yes)
@@ -50,16 +94,37 @@ ResizeHandlerMixin = Ember.Mixin.create
       onResizeStart.call(@, evt)
     @
 
+  ###
+    @private
+
+    Wrapper for custom onResize.
+
+    @method _onResize
+  ###
   _onResize: (evt) ->
     onResize = get(@, 'onResize')
     if typeOf(onResize) is 'function'
       onResize.call(@, evt)
     @
 
+  ###
+    @private
+
+    Wrapper for custom onResizeEnd.
+
+    @method _onResizeEnd
+  ###
   _onResizeEnd: (evt) ->
     debounce(@, @_debouncedOnResizeEnd, evt, get(@, 'resizeEndDelay'))
     @
 
+  ###
+    @private
+
+    Debounced wrapper for custom onResizeEnd.
+
+    @method _debouncedOnResizeEnd
+  ###
   _debouncedOnResizeEnd: (evt) ->
     onResizeEnd = get(@, 'onResizeEnd')
     @set 'resizing', no
@@ -67,9 +132,23 @@ ResizeHandlerMixin = Ember.Mixin.create
       onResizeEnd.call(@, evt)
     @
 
+  ###
+    @private
+
+    Observe for window resize events.
+
+    @method _setupResizeEventHandler
+  ###
   _setupResizeEventHandler: Ember.on 'didInsertElement', ->
     $(window).on 'resize.' + Ember.guidFor(@), get(@, "resizeHandler")
 
+  ###
+    @private
+
+    Stop observing for window resize events.
+
+    @method _teardownResizeEventHandler
+  ###
   _teardownResizeEventHandler: Ember.on 'willDestroy', ->
     $(window).off 'resize.' + Ember.guidFor(@), get(@, "resizeHandler")
 
