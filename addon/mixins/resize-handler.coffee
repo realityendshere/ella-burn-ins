@@ -148,7 +148,6 @@ ResizeHandlerMixin = Ember.Mixin.create
     @method _setupResizeEventHandler
   ###
   _setupResizeEventHandler: Ember.on 'didInsertElement', ->
-    console.log "Setup resize event handling", Ember.guidFor(@)
     $(window).on 'resize.' + Ember.guidFor(@), get(@, "resizeHandler")
 
   ###
@@ -159,7 +158,6 @@ ResizeHandlerMixin = Ember.Mixin.create
     @method _teardownResizeEventHandler
   ###
   _teardownResizeEventHandler: Ember.on 'willDestroyElement', ->
-    console.log "Teardown resize event handling", Ember.guidFor(@)
     $(window).off 'resize.' + Ember.guidFor(@), get(@, "resizeHandler")
 
 `export default ResizeHandlerMixin`
