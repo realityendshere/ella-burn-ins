@@ -7,7 +7,15 @@ typeOf = Ember.typeOf
 computed = Ember.computed
 debounce = Ember.run.debounce
 
-# The resize handler will fire onWindowResize when the window resize ends
+###
+  `ResizeHandlerMixin` pipes window resize events to a parent view/component.
+
+  This mixin provides three (3) hooks for resize events: `onResizeStart`,
+  `onResize`, and `onResizeEnd`.
+
+  @class ResizeHandlerMixin
+###
+
 ResizeHandlerMixin = Ember.Mixin.create
   ###
     Current state: being resized or not being resized
@@ -140,6 +148,7 @@ ResizeHandlerMixin = Ember.Mixin.create
     @method _setupResizeEventHandler
   ###
   _setupResizeEventHandler: Ember.on 'didInsertElement', ->
+    console.log "Setup resize event handling", Ember.guidFor(@)
     $(window).on 'resize.' + Ember.guidFor(@), get(@, "resizeHandler")
 
   ###
@@ -149,7 +158,8 @@ ResizeHandlerMixin = Ember.Mixin.create
 
     @method _teardownResizeEventHandler
   ###
-  _teardownResizeEventHandler: Ember.on 'willDestroy', ->
+  _teardownResizeEventHandler: Ember.on 'willDestroyElement', ->
+    console.log "Teardown resize event handling", Ember.guidFor(@)
     $(window).off 'resize.' + Ember.guidFor(@), get(@, "resizeHandler")
 
 `export default ResizeHandlerMixin`

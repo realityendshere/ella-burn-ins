@@ -7,6 +7,10 @@ Router = Ember.Router.extend
 router = Router.map ->
   @route 'index', path: '/'
   @route 'resize'
+  @route 'scroll'
+  @route 'styles'
+  @route 'hashbound'
+  @route 'iterator'
 
 `export default router`
 

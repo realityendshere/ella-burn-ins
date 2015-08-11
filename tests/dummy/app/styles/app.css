@@ -1,0 +1,22 @@
+.status-bar {
+  height: 32px;
+  line-height: 32px;
+  background: gray;
+  padding: 4px 18px;
+}
+
+scroll-responder {
+  position: absolute;
+  top: 124px;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+  border-top: 1px solid gray;
+}
+
+scroll-responder .tall p {
+  margin-bottom: 40em;
+  padding: 4px 18px;
+}

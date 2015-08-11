@@ -1,11 +1,15 @@
 `import Ember from 'ember'`
 
+run = Ember.run
+Promise = Ember.RSVP.Promise
+
+
 ###
 @module emberella
 ###
 
 ###
-  `Emberella.forEachAsync` iterates over a large array gradually. The function
+  `forEachAsync` iterates over a large array gradually. The function
   will process items in the array for a given number of ms, stop iterating for
   a given wait time, then proceed and wait until the iteration is complete.
 
@@ -28,7 +32,6 @@
   @param Function completeFn A callback function
   @param Integer runTime The number of ms to process array items
   @param Integer wait The number of ms to wait between iteration sets
-  @namespace Emberella
 ###
 
 forEachAsync = (context, objects, eachFn, completeFn, runTime = 200, wait = 200) ->
@@ -49,12 +52,12 @@ forEachAsync = (context, objects, eachFn, completeFn, runTime = 200, wait = 200)
         process.call(context, itemsToProcess.shift(), ++i)
 
       if itemsToProcess.length > 0
-        Ember.run.later(context, loopFn, wait)
+        run.later(context, loopFn, wait)
 
       else
         callback.call(context) if callback? and callback.call?
 
-    Ember.run(context, loopFn)
+    run(context, loopFn)
 
   processItems objects, eachFn, completeFn
 
