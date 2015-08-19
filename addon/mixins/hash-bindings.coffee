@@ -143,7 +143,7 @@ HashBindingsMixin = Ember.Mixin.create
     remix = {}
     remix[name] = bindComputed
     mixin(@, remix)
-
+    get(@, name)
     @
 
   _attachHashChangeHandler: (name) ->
