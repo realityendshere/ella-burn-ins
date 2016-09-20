@@ -112,7 +112,7 @@ StyleBindingsMixin = Ember.Mixin.create
         styleTokens = styles.map (style) =>
           @createStyleString style, lookup[style]
         styleString = styleTokens.join('')
-        new Ember.Handlebars.SafeString(if (styleString.length is 0) then '' else styleString)
+        Ember.String.htmlSafe(if (styleString.length is 0) then '' else styleString)
 
     # add dependents to computed property
     styleComputed.property.apply(styleComputed, properties)
